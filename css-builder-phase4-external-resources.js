@@ -1,0 +1,18 @@
+(()=>{
+'use strict';
+const P4=window.CVB_PHASE4=window.CVB_PHASE4||{version:'2.19',css:[],js:[]};P4.version='2.19';
+const $=id=>document.getElementById(id);
+const rt=()=>window.CVB_PHASE_RUNTIME;
+const valid=u=>/^https:\/\//i.test(String(u||'').trim());
+function inject(){
+  if($('cvbPhase4'))return;const c=$('controls');if(!c)return;const s=document.createElement('section');s.className='panel-section visual-editor-section';s.id='cvbPhase4';
+  s.innerHTML=`<div class="cvb-p4-head"><div><h2>21. Risorse esterne</h2><span>CSS · JS · CDN</span></div><span class="counter">HTTPS</span></div><p class="hint">Aggiungi risorse esterne alla sola preview. Per sicurezza vengono accettati solo URL HTTPS.</p><div class="cvb-p4-grid"><div><b>CSS</b><div id="cvbP4Css"></div><button type="button" data-p4-add="css">+ CSS / CDN</button></div><div><b>JavaScript</b><div id="cvbP4Js"></div><button type="button" data-p4-add="js">+ JS / CDN</button></div></div><div class="cvb-p4-actions"><button type="button" id="cvbP4Apply" class="primary">↻ Ricarica preview</button><button type="button" id="cvbP4Clear">Svuota</button></div><div class="cvb-p4-warning">⚠ Le risorse esterne richiedono una connessione e possono modificare il comportamento della preview.</div>`;c.appendChild(s);render();
+  s.addEventListener('click',e=>{const a=e.target.closest('[data-p4-add]');if(a){P4[a.dataset.p4Add].push('');render();return;}const r=e.target.closest('[data-p4-remove]');if(r){P4[r.dataset.p4Remove].splice(Number(r.dataset.p4Index),1);render();return;}if(e.target.id==='cvbP4Apply')rt()?.refresh();if(e.target.id==='cvbP4Clear'){P4.css=[];P4.js=[];render();rt()?.refresh();}});
+  s.addEventListener('input',e=>{const t=e.target;if(t.dataset.p4Kind)P4[t.dataset.p4Kind][Number(t.dataset.p4Index)]=t.value;});
+}
+function render(){const c=$('cvbP4Css'),j=$('cvbP4Js');if(c)c.innerHTML=P4.css.map((v,i)=>`<div class="cvb-p4-row"><input value="${esc(v)}" placeholder="https://cdnjs.cloudflare.com/..." data-p4-kind="css" data-p4-index="${i}"><button type="button" data-p4-remove="css" data-p4-index="${i}">×</button></div>`).join('');if(j)j.innerHTML=P4.js.map((v,i)=>`<div class="cvb-p4-row"><input value="${esc(v)}" placeholder="https://cdnjs.cloudflare.com/..." data-p4-kind="js" data-p4-index="${i}"><button type="button" data-p4-remove="js" data-p4-index="${i}">×</button></div>`).join('');}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+rt()?.register(()=>({head:P4.css.filter(valid).map(u=>`<link rel="stylesheet" href="${esc(u)}">`).join(''),body:P4.js.filter(valid).map(u=>`<script src="${esc(u)}"></script>`).join('')}));
+document.head.appendChild(Object.assign(document.createElement('style'),{textContent:`.cvb-p4-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.cvb-p4-head h2{margin:0;font-size:14px}.cvb-p4-head span{font-size:10px;color:var(--muted)}.cvb-p4-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.cvb-p4-grid>b{font-size:11px}.cvb-p4-row{display:grid;grid-template-columns:1fr 30px;gap:5px;margin:6px 0}.cvb-p4-row input{min-width:0;padding:7px;border:1px solid var(--border);border-radius:7px;background:var(--input);color:var(--text)}.cvb-p4-row button{padding:4px}.cvb-p4-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.cvb-p4-warning{margin-top:9px;padding:7px;border:1px dashed #70582f;border-radius:7px;color:#e9c992;background:rgba(112,88,47,.12);font-size:9px}@media(max-width:700px){.cvb-p4-grid{grid-template-columns:1fr}}`}));
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject,{once:true});else inject();
+})();

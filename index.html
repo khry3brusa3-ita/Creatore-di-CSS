@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Visual Builder — v2.20</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>CSS Visual Builder</h1>
+      <p>Editor visuale CSS offline — TAG, CLASS, ID e preview live</p>
+    </div>
+    <div class="header-actions">
+      <label class="file-button">Carica HTML<input id="fileInput" type="file" accept=".html,.htm,text/html" hidden></label>
+      <button id="resetButton" type="button">Ripristina</button>
+      <button id="downloadButton" type="button" class="primary">Scarica progetto</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="left-panel">
+      <section class="panel-section html-section">
+        <div class="section-title-row"><h2>1. Il tuo HTML</h2><button id="applyHtmlButton" type="button">Applica</button></div>
+        <textarea id="htmlInput" spellcheck="false" aria-label="HTML da modificare"></textarea>
+        <p class="hint">Incolla o carica HTML. La preview è separata e gli elementi possono essere selezionati direttamente.</p>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-title-row"><h2>2. Struttura DOM</h2><span id="nodeCount" class="counter">0</span></div>
+        <input id="domSearch" class="search" type="search" placeholder="Cerca elemento, classe o ID...">
+        <div class="selector-toolbar"><span>Selettore:</span><code id="selectedSelector" class="selector-chip">Nessuno</code></div>
+        <div id="domTree" class="dom-tree"></div>
+      </section>
+
+      <section class="panel-section layout-section">
+        <div class="section-title-row"><h2>3. Layout visuale</h2><span id="layoutSelectionCount" class="counter">0</span></div>
+        <label class="layout-toggle"><input id="layoutMultiToggle" type="checkbox"> Selezione multipla</label>
+        <p class="hint">Attiva la selezione multipla, scegli almeno 2 elementi dallo stesso contenitore e poi applica un layout. Puoi anche usare Shift/Ctrl + clic nella preview.</p>
+        <div class="layout-controls">
+          <label class="mini-layout-field"><span>Spazio</span><input id="layoutGap" type="number" min="0" max="200" step="1" value="20"><span>px</span></label>
+        </div>
+        <div id="layoutActions" class="layout-actions">
+          <button type="button" data-layout="row">↔ Affianca</button>
+          <button type="button" data-layout="column">↕ Impila</button>
+          <button type="button" data-layout="center">◎ Centra</button>
+          <button type="button" data-layout="space">↔ Distribuisci</button>
+          <button type="button" data-layout="grid">▦ Griglia</button>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-title-row"><h2>4. Elementi per TAG</h2><span id="tagCount" class="counter">0</span></div>
+        <input id="tagSearch" class="search" type="search" placeholder="Cerca tag, es. h1, div, footer...">
+        <div id="tagList" class="tag-list"></div>
+      </section>
+
+      <section class="panel-section controls-section">
+        <div class="section-title-row"><h2>5. Proprietà CSS</h2><span id="cssPropertyCount" class="counter" title="Proprietà nel database locale">0</span><span id="selectedLabel" class="selected-label">Nessun elemento</span></div>
+        <div class="selector-line"><code id="controlSelector">—</code><button id="clearStylesButton" type="button">Azzera regola</button></div>
+        <div class="pseudo-bar" role="group" aria-label="Stato CSS">
+          <button type="button" class="pseudo-btn active" data-pseudo="normal">Normale</button>
+          <button type="button" class="pseudo-btn" data-pseudo=":hover">:hover</button>
+          <button type="button" class="pseudo-btn" data-pseudo=":focus">:focus</button>
+          <button type="button" class="pseudo-btn" data-pseudo=":active">:active</button>
+          <button type="button" class="pseudo-btn" data-pseudo=":visited">:visited</button>
+          <button type="button" class="pseudo-btn" data-pseudo="::before">::before</button>
+          <button type="button" class="pseudo-btn" data-pseudo="::after">::after</button>
+        </div>
+        <input id="propertySearch" class="search" type="search" placeholder="Cerca proprietà CSS...">
+        <div class="controls-hint">Modifica direttamente i controlli. <strong>ON/OFF</strong> decide solo se la proprietà viene applicata/esportata. Puoi preparare un valore da lasciare temporaneamente disattivato.</div>
+        <div id="controls" class="controls"></div>
+      </section>
+    </aside>
+
+    <section class="preview-panel">
+      <div class="preview-toolbar">
+        <div><strong>Anteprima live</strong> <span id="previewStatus" class="status">Pronta</span></div>
+        <div class="preview-actions">
+          <label class="drag-toggle"><input id="dragModeToggle" type="checkbox"> ↔ Trascina</label>
+          <label class="snap-field"><span>Snap</span><input id="dragSnap" type="number" min="0" max="64" step="1" value="8"><span>px</span></label>
+          <button id="desktopButton" class="device active" type="button">Desktop</button>
+          <button id="mobileButton" class="device" type="button">Mobile</button>
+        </div>
+      </div>
+      <div id="previewHelp" class="preview-help">💡 Clicca direttamente un elemento nella preview per selezionarlo.</div>
+      <div id="previewFrameWrap" class="preview-frame-wrap desktop"><iframe id="previewFrame" title="Anteprima HTML/CSS" sandbox="allow-scripts"></iframe></div>
+    </section>
+  </main>
+
+  <section class="code-panel">
+    <div class="code-header">
+      <div><h2>CSS generato</h2><p>Solo le proprietà attivate vengono inserite nel CSS.</p></div>
+      <button id="copyCssButton" type="button">Copia CSS</button>
+    </div>
+    <pre id="cssOutput" class="css-output"><code></code></pre>
+  </section>
+
+  <footer class="app-footer">CSS CSS Visual Builder v2.28 — CDN / risorse esterne nella sola preview.</footer>
+  <script src="css-properties.js"></script>
+  <script src="app.js"></script>
+  <script src="css-builder-extensions.js"></script>
+  <script src="css-builder-ve-core.js"></script>
+  <script src="css-builder-ve-transform.js"></script>
+  <script src="css-builder-ve-shadow.js"></script>
+  <script src="css-builder-ve-gradient.js"></script>
+  <script src="css-builder-ve-border.js"></script>
+  <script src="css-builder-ve-filter.js"></script>
+  <script src="css-builder-ve-text-shadow.js"></script>
+  <script src="css-builder-ve-mask.js"></script>
+  <script src="css-builder-ve-box-model.js"></script>
+  <script src="css-builder-ve-flexbox.js"></script>
+  <script src="css-builder-ve-grid.js"></script>
+  <script src="css-builder-ve-clip-path.js"></script>
+  <script src="css-builder-ve-bezier.js"></script>
+  <script src="css-builder-ve-transition.js"></script>
+  <script src="css-builder-phase1-stability.js"></script>
+  <script src="css-builder-phase2-animation-studio.js"></script>
+  <script src="css-builder-phase2-animation-ux3.js"></script>
+  <script src="css-builder-phase3-javascript-lab-v2.js"></script>
+  <script src="css-builder-phase3-runtime-hardening.js"></script>
+  <script src="css-builder-phase4-external-resources-v2.js"></script>
+  <script src="css-builder-phase5-project-json.js"></script>
+  <script src="css-builder-phase3-javascript-lab-persistence.js"></script>
+  <script src="css-builder-phase5-project-json-ux.js"></script>
+  <script src="css-builder-phase1-refinements.js"></script>
+  <script src="css-builder-phase1-integration.js"></script>
+  <script src="css-builder-phase1-ux2.js"></script>
+</body>
+</html>
