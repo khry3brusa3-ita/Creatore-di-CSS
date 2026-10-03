@@ -220,7 +220,7 @@ Questo approccio rende il progetto più facile da mantenere e permette di aggiun
 
 ## 📝 Stato del Progetto
 
-La base documentata nel repository arriva alla **v2.12** per gli editor HTML/CSS visuali.
+La base documentata nel repository arriva alla **v2.30** per gli editor HTML/CSS visuali.
 
 Le estensioni successive possono includere nuovi moduli, in particolare il **JavaScript Lab** e il completamento del sistema di salvataggio del progetto in un unico file JSON, comprendendo anche il codice JavaScript e lo stato completo dell'interfaccia.
 
