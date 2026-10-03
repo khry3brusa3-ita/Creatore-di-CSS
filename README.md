@@ -402,7 +402,7 @@ This structure makes the project easier to maintain and leaves room for future C
 
 ## 📝 Project Status
 
-The repository version documented here reaches **v2.12** for the visual HTML/CSS editor and its advanced visual modules.
+The repository version documented here reaches **v2.30** for the visual HTML/CSS editor and its advanced visual modules.
 
 Further iterations can extend the project with additional JavaScript Lab functionality and a fully unified JSON project format containing HTML, CSS, JavaScript and the complete interface state.
 
