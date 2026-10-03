@@ -160,7 +160,7 @@ Il progetto è stato pensato anche per integrare un'area **JavaScript Lab** dedi
 * **Separazione dei moduli:** HTML, CSS e JavaScript possono essere gestiti in aree distinte, pur facendo parte dello stesso progetto.
 * **Salvataggio del JS nel progetto:** l'integrazione del contenuto del JavaScript Lab nel sistema di salvataggio JSON è prevista come parte della gestione completa dello stato del progetto.
 
-> **Nota:** nelle versioni del progetto già presenti nel repository, il nucleo documentato è `v2.12`; il JavaScript Lab e il salvataggio completo di tutto il suo contenuto possono quindi dipendere dall'integrazione più recente del progetto.
+> **Nota:** nelle versioni del progetto già presenti nel repository, il nucleo documentato è `v2.30`; il JavaScript Lab e il salvataggio completo di tutto il suo contenuto possono quindi dipendere dall'integrazione più recente del progetto.
 
 ---
 
